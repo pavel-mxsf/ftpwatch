@@ -1,13 +1,15 @@
 .animate-show {
-    -webkit-transition:all linear 2s;
-    transition:all linear 1s;
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
     opacity:1;
     line-height:20px;
 }
 
 .animate-show.ng-hide-add,
-.animate-show.ng-hide-remove {
-
+.animate-show.ng-leave,
+.animate-show.ng-hide-remove
+{
+    opacity: 0;
 }
 
 .animate-show.ng-hide {
@@ -15,7 +17,48 @@
     line-height:0px;
 }
 
+.repeated-item.ng-enter, .repeated-item.ng-move {
+    -webkit-transition:0.5s linear all;
+    -moz-transition:0.5s linear all;
+    -o-transition:0.5s linear all;
+    transition:0.5s linear all;
+    opacity:0;
+}
+
+.repeated-item.ng-enter.ng-enter-active,
+.repeated-item.ng-move.ng-move-active {
+    opacity:1;
+}
+
+.repeated-item.ng-leave {
+    -webkit-animation:0.5s my_animation;
+    -moz-animation:0.5s my_animation;
+    -o-animation:0.5s my_animation;
+    animation:0.5s my_animation;
+}
+
+@keyframes my_animation {
+    from { opacity:1; }
+    to { opacity:0; }
+}
+
+@-webkit-keyframes my_animation {
+    from { opacity:1; }
+    to { opacity:0; }
+}
+
+@-moz-keyframes my_animation {
+    from { opacity:1; }
+    to { opacity:0; }
+}
+
+@-o-keyframes my_animation {
+    from { opacity:1; }
+    to { opacity:0; }
+}
+
 .bottombar {
+    margin-left:-10px;
     line-height:20px;
     padding:10px;
     background:white;
@@ -25,7 +68,7 @@
     width:100%;
     position: fixed;
     z-index: 9999;
-    box-shadow: #949494 0px -10px 15px 0px rgba(50, 50, 50, 0.19);
+    box-shadow: #949494 0px -5px 5px 0px rgba(50, 50, 50, 0.19);
 }
 
 .topbar {
@@ -38,5 +81,5 @@
     width:100%;
     position: fixed;
     z-index: 9999;
-    box-shadow: #949494 0px 10px 15px 0px rgba(50, 50, 50, 0.19);
+    box-shadow: #949494 0px 5px 5px 0px rgba(50, 50, 50, 0.19);
 }

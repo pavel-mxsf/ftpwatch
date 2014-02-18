@@ -21,6 +21,11 @@ app.controller('mainCtrl', function mainCtrl($scope, $http, itemsService, socket
     $scope.reloadImagesFromFTP = function(){
         itemsService.reloadImagesFromFTP();
     };
+    $scope.cleanDownloaded = function() {
+        $scope.items = [];
+        itemsService.cleanDownloaded();
+    };
+
     $scope.getItems();
     socket.on('log', function(data){
         if (data.message === "ftpdone") {

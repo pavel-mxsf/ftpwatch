@@ -10,13 +10,21 @@ app.service('itemsService', function($http) {
         $http.get('/data').success(function(data){
             that.items = data.items;
             that.groupByProject();
-            console.log(that.itemsByProject);
         });
     };
 
     this.reloadImagesFromFTP = function(){
         $http.get('/update').success(function(msg){
             console.log(msg);
+        });
+    };
+
+    this.cleanDownloaded = function(){
+        $http.get('/cleanDownloaded').success(function(msg){
+            console.log(msg);
+            this.items = [];
+            this.itemsByProject = [];
+            this.update();
         });
     };
 

@@ -27,7 +27,7 @@ app.directive('log', function(socket,$timeout) {
             });
             socket.on('log', function(data){
                 if (data.message === "ftpdone") {
-                    $timeout(function(){scope.visible=false}, 500);
+                    $timeout(function(){scope.visible=false}, 3000);
                 }
             });
         }

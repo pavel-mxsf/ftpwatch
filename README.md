@@ -5,7 +5,7 @@ Browse ftp - find images - make thumbnails - show on blog-like page
 
 Requirements
 ------------
-
+Node.js installed
 Depends on gm installed - http://aheckmann.github.io/gm/ 
 First install either GraphicsMagick or ImageMagick.
 

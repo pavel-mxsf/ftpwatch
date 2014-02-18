@@ -12,6 +12,7 @@
       "q":"*",
       "throat":"*",
       "gm" : "*",
-      "socket.io": "*"
+      "socket.io": "*",
+      "fs-extra": "*"
   }
 }

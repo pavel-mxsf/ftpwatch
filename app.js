@@ -1,8 +1,3 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express');
 var routes = require('./routes');
 var http = require('http');
@@ -10,6 +5,7 @@ var path = require('path');
 var ftpBrowser = require('./ftpBrowser');
 var app = express();
 var sl = require('./socketLogger');
+var fs = require('fs-extra');
 
 
 // all environments
@@ -21,7 +17,6 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
 app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -48,7 +43,6 @@ var cache = {
 ftpBrowser.update(function(err, data){
     cache.items = data;
     cache.lastUpdate = new Date();
-    console.log('cache updated...');
 });
 
 app.get('/', routes.index);
@@ -68,13 +62,33 @@ app.get('/update', function(req, res) {
     });
 });
 
-app.get('/data', function(req,res){
-   res.json(cache);
+app.get('/cleanDownloaded', function(req,res) {
+
+    var pth = path.join(__dirname, 'public', 'downloaded');
+    fs.readdir(pth, function(err, dirs){
+        if (!err) {
+        dirs.forEach(function(dir){
+            fs.readdir(path.join(pth,dir), function(err, files){
+                if (!err) {
+                    files.forEach(function(file){
+                        fs.unlink(path.join(pth,dir,file), function (err) {
+                            if (!err) {
+                            res.send('deleted');
+                            console.log('successfully deleted '+file);
+                            cache = {
+                                    lastUpdate: new Date(),
+                                    items: []
+                                };
+                            }
+                        });
+                    });
+                }
+            });
+        });
+        }
+    });
 });
 
-io.sockets.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-        console.log(data);
-    });
+app.get('/data', function(req,res){
+   res.json(cache);
 });

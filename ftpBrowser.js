@@ -1,7 +1,7 @@
 var q=require('q');
 var Client = require('ftp');
 var util = require('util');
-var path = require('path');
+var pathUtil = require('path');
 var fs = require('fs');
 var http = require('http');
 var gm = require('gm');
@@ -60,7 +60,7 @@ var filterJpegs = function(dirs) {
         item.list.forEach(function(listItem){
            var regex = /^[\w. ]*$/;
            if (listItem.type==='-'
-               && path.extname(listItem.name).toLowerCase()==='.jpg'
+               && pathUtil.extname(listItem.name).toLowerCase()==='.jpg'
                && listItem.name.substr(0,3).toLowerCase() !== 'tn_'
                && listItem.name.toLowerCase() !== 'vize_logo_render.jpg'
                && regex.test(listItem.name)
@@ -126,12 +126,12 @@ var getProjectNameFromPath = function(path) {
 var downloadFile = function(item) {
     var deferred = q.defer();
     var dirData = getProjectNameFromPath(item.name);
-    var newPath = './public/downloaded/' + dirData.project;
+    var newPath = pathUtil.join('./public/downloaded/', dirData.project);
     log('checking: '+item.name);
-    item.fileName = path.basename(item.name);
-    item.localPath = './public/downloaded/' + dirData.project + '/' + item.fileName;
+    item.fileName = pathUtil.basename(item.name);
+    item.localPath = pathUtil.join('./public/downloaded/' , dirData.project , item.fileName);
     item.localURL = '/downloaded/' + dirData.project + '/' + item.fileName;
-    item.localThumb = './public/downloaded/' + dirData.project + '/thumb_' + item.fileName;
+    item.localThumb = pathUtil.join('./public/downloaded/', dirData.project, ('/thumb_' + item.fileName));
     item.localThumbURL = '/downloaded/' + dirData.project + '/thumb_' + item.fileName;
     item.project = dirData.project;
     item.httpPath = 'http://' + settings.host + '/' + item.name;
