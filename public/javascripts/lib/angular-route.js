@@ -170,7 +170,7 @@ function $RouteProvider(){
   };
 
    /**
-    * @param path {string} path
+    * @param path {string} pathUtil
     * @param opts {Object} options
     * @return {?Object}
     *

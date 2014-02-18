@@ -17,7 +17,6 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -63,7 +62,7 @@ app.get('/update', function(req, res) {
 });
 
 app.get('/cleanDownloaded', function(req,res) {
-
+    setTimeout(function(){res.send('deleted')}, 2000);
     var pth = path.join(__dirname, 'public', 'downloaded');
     fs.readdir(pth, function(err, dirs){
         if (!err) {
@@ -73,7 +72,7 @@ app.get('/cleanDownloaded', function(req,res) {
                     files.forEach(function(file){
                         fs.unlink(path.join(pth,dir,file), function (err) {
                             if (!err) {
-                            res.send('deleted');
+
                             console.log('successfully deleted '+file);
                             cache = {
                                     lastUpdate: new Date(),
