@@ -1,0 +1,21 @@
+div.topbar
+    log()
+    button(ng-click='reloadImagesFromFTP()').btn.btn-default
+        span.glyphicon.glyphicon-refresh
+    //button(ng-click='getItems()').btn.btn-default Refresh data from server
+    span Sort by:
+    button(ng-click='predicate = "date"').btn.btn-default date
+    button(ng-click='predicate = "size"').btn.btn-default size
+    button(ng-click='predicate = "project"').btn.btn-default project
+    span Filter:
+    input(type='search', ng-model='q', placeholder='type to filter...')
+div(infinite-scroll='pagingFunction()', style='position:relative; margin:auto; width:920px; padding-top:60px;')
+    div(ng-repeat='i in items | orderBy:predicate:true | filter:q | slice:0:numToShow ', style="background-color:#EEE")
+        h3
+            span {{i.project}}
+            span(style='float:right') {{i.fileName}}
+        div
+            img(ng-src='{{i.localThumbURL}}')
+        span {{i.date | date:'yyMMdd_HHmm'}} - {{i.size | bytes}} -
+            a(ng-href='{{i.httpPath}}') {{i.httpPath}}
+

@@ -1,0 +1,17 @@
+{
+  "name": "ftpwatcher",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.4.7",
+    "jade": "*",
+      "ftp":"*",
+      "q":"*",
+      "throat":"*",
+      "gm" : "*",
+      "socket.io": "*"
+  }
+}
