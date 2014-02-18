@@ -14,8 +14,8 @@ Install
 
 ```
 git clone https://github.com/pavel-mxsf/ftpwatch.git
+cd ftpwatch
 npm install
-
 ```
 
 Configuration
