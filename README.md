@@ -23,5 +23,10 @@ Configuration
 
 Edit ftpBrowserSettings.js in root. Set ftp login credentials, browsing root, thumbnails size and how many files should be downloaded and resized at once.
 
-
+Run
+---
+```
+node app.js
+```
+Server is listening on port 3000
 
