@@ -1,7 +1,7 @@
 doctype html
 html
     head
-        title= title
+        title ftpWatcher
         link(rel='stylesheet', href='/stylesheets/style.css')
         link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css')
         script(src='http://code.jquery.com/jquery-1.10.2.min.js')
@@ -12,8 +12,13 @@ html
         script(src='/javascripts/lib/ng-infinite-scroll.js')
         script(src='/javascripts/lib/socket.io.js')
         script(src='/javascripts/lib/socket.js')
+        script(src='/javascripts/app.js')
         script(src='/javascripts/ctrl.js')
+        script(src='/javascripts/filters.js')
+        script(src='/javascripts/directives.js')
+        script(src='/javascripts/factories.js')
+        script(src='/javascripts/services.js')
 
-    body(ng-app='vizeGallery')
+    body(ng-app='ftpWatcher')
         div(ng-view)
 
