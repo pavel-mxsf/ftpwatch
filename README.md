@@ -3,16 +3,25 @@ ftpWatcher
 
 Browse ftp - find images - make thumbnails - show on blog-like page
 
-Install
--------
+Requirements
+------------
 
 Depends on gm installed - http://aheckmann.github.io/gm/ 
 First install either GraphicsMagick or ImageMagick.
-Then:
+
+Install
+-------
 
 ```
 git clone https://github.com/pavel-mxsf/ftpwatch.git
 npm install
 
 ```
+
+Configuration
+-------------
+
+Edit ftpBrowserSettings.js in root. Set ftp login credentials, browsing root, thumbnails size and how many files should be downloaded and resized at once.
+
+
 
