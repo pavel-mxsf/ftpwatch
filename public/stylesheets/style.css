@@ -1,0 +1,42 @@
+.animate-show {
+    -webkit-transition:all linear 2s;
+    transition:all linear 1s;
+    opacity:1;
+    line-height:20px;
+}
+
+.animate-show.ng-hide-add,
+.animate-show.ng-hide-remove {
+
+}
+
+.animate-show.ng-hide {
+    opacity:0;
+    line-height:0px;
+}
+
+.bottombar {
+    line-height:20px;
+    padding:10px;
+    background:white;
+    opacity: 1;
+    display:block!important;
+    bottom:0;
+    width:100%;
+    position: fixed;
+    z-index: 9999;
+    box-shadow: #949494 0px -10px 15px 0px rgba(50, 50, 50, 0.19);
+}
+
+.topbar {
+    line-height:20px;
+    padding:10px;
+    background:white;
+    opacity: 1;
+    display:block!important;
+    top:0;
+    width:100%;
+    position: fixed;
+    z-index: 9999;
+    box-shadow: #949494 0px 10px 15px 0px rgba(50, 50, 50, 0.19);
+}

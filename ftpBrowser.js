@@ -134,21 +134,35 @@ var downloadFile = function(item) {
     item.localThumb = './public/downloaded/' + dirData.project + '/thumb_' + item.fileName;
     item.localThumbURL = '/downloaded/' + dirData.project + '/thumb_' + item.fileName;
     item.project = dirData.project;
-    item.httpPath = 'http://' + settings.host + '/'+item.name;
+    item.httpPath = 'http://' + settings.host + '/' + item.name;
+    item.ftpPath = 'ftp://' + settings.host + '/' + item.name;
+
     fs.mkdir(newPath, function(){
         fs.exists(item.localPath, function(exists){
             prog('download');
+            log('checking: ' + item.name);
             if (exists) {
                 deferred.resolve(item);
             }
             else
             {
-                log('downloading: '+item.name);
-                var file = fs.createWriteStream(item.localPath);
-                http.get(item.httpPath, function(response) {
+                log('downloading: ' + item.name);
+                /*http.get(item.httpPath, function(response) {
                     response.pipe(file);
+                });*/
+                console.log(item.localPath);
+                c.get(item.name, function(err, stream) {
+                    if (err) {
+                        console.log(item.name);
+                        console.log(err);
+                        deferred.reject(err);
+                    }
+                    else
+                    {
+                        stream.once('close', function() { deferred.resolve(item) });
+                        stream.pipe(fs.createWriteStream(item.localPath));
+                    }
                 });
-                file.on('finish', function(){deferred.resolve(item)});
             }
         });
     });
@@ -165,7 +179,7 @@ var resizeItem = function(item) {
     fs.exists(item.localThumb, function(exists){
         prog('thumbs');
         if (exists) {
-            log('thumnail exists: ' + item.localPath);
+            log('thumb exists: ' + item.localPath);
             deferred.resolve(item);
         }
         else
@@ -190,52 +204,53 @@ var createThumbs = function(filesList) {
 var updating = false;
 
 module.exports.update = function(cb) {
-
-var listTemp = list(settings.rootDir);
-
-if (!updating) {
-updating = true;
-connect(settings)
-    .then(listTemp)
-    .then(function(dirs){
-        initP('list', dirs.length);
-        var promises=[];
-        dirs.list.forEach(function(dir){
-            var listPromise = list('temp/'+dir.name+'/render')();
-            promises.push(listPromise);
-        });
-        return q.all(promises);
-    })
-    .then(function(renderDirs){
-        initP('list', renderDirs.renderDirs);
-        var promises=[];
-        renderDirs.forEach(function(renderDir) {
-            renderDir.list.forEach(function(dir){
-                var listPromise = list(renderDir.path+'/'+dir.name)();
-                var listPromiseSub = list(renderDir.path+'/'+dir.name+'/original')();
+    var listTemp = list(settings.rootDir);
+    if (!updating) {
+    updating = true;
+    connect(settings)
+        .then(listTemp)
+        .then(function(dirs){
+            initP('list', dirs.length);
+            var promises=[];
+            dirs.list.forEach(function(dir){
+                var listPromise = list('temp/'+dir.name+'/render')();
                 promises.push(listPromise);
-                promises.push(listPromiseSub);
             });
-        });
-        return q.all(promises);
-    })
-    .then(filterJpegs)
-    .then(reduceList)
-    .then(getDates, function(err){ console.log(err); })
-    .then(sortByDate)
-    .then(downloadNew)
-    .then(createThumbs)
-    .then(function(items){cb(null, items)})
-    .then(function(items){ niceLog(items); })
-    .then(function(){
-        updating=false;
-        log('ftpdone');
-        c.end();
-        logModule.end();
-    })
-    .done();
-}
-else {
-    cb('allready updating');
-}
-};
+            return q.all(promises);
+        })
+        .then(function(renderDirs){
+            initP('list', renderDirs.renderDirs);
+            var promises=[];
+            renderDirs.forEach(function(renderDir) {
+                renderDir.list.forEach(function(dir){
+                    var listPromise = list(renderDir.path+'/'+dir.name)();
+                    var listPromiseSub = list(renderDir.path+'/'+dir.name+'/original')();
+                    promises.push(listPromise);
+                    promises.push(listPromiseSub);
+                });
+            });
+            return q.all(promises);
+        })
+        .then(filterJpegs)
+        .then(reduceList)
+        .then(getDates)
+        .then(sortByDate)
+        .then(downloadNew)
+        .then(createThumbs)
+        .then(function(items){ cb(null, items) })
+        .then(function(items){ niceLog(items); })
+        .then(function(){
+            updating=false;
+            log('ftpdone');
+            c.end();
+            logModule.end();
+        })
+        .catch(function (err) {
+            console.log(err);
+        })
+        .done();
+    }
+    else {
+        cb('allready updating');
+    }
+    };

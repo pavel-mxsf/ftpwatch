@@ -4,10 +4,10 @@ module.exports = function(){
     return {
         host:"internal.visualarch.eu",
         user:"ftpwtest",
-        password:"789",
+        password:"789x",
         rootDir:"temp",
         thumbWidth:800,
-        downloadConcurrency: 4,
+        downloadConcurrency: 1,
         resizeConcurrency: 4
     }
 };
